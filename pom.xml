@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>aop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>aop</name>
+
+    <url>https://github.com/poketilio/Spring-with-AspectJ.git</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.surefire.version>3.0.0-M3</maven.surefire.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <aspectj.version>1.9.4</aspectj.version>
+        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
+        <spring.version>5.1.8.RELEASE</spring.version>
+        <joda.version>2.5</joda.version>
+        <aspectj.maven.plugin.version>1.11</aspectj.maven.plugin.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- This plugin is only necessary for aspects in src folder. (For example User)
+                It also configure aspect class to add static methods as aspectOf and hasAspect-->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>${aspectj.maven.plugin.version}</version>
+                    <configuration>
+                        <showWeaveInfo>true</showWeaveInfo>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <Xlint>ignore</Xlint>
+                        <complianceLevel>1.8</complianceLevel>
+                        <encoding>UTF-8</encoding>
+                        <verbose>true</verbose>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <!-- IMPORTANT -->
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>test-compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjtools</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <!-- IMPORTANT in maven compiler up 3.0 version. Probably is a bug-->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+            </plugin>
+            <!-- This plugin is for classes that aren't in src (For example AbstractDateTime)-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+                <configuration>
+                    <argLine>
+                        -javaagent:${user.home}/.m2/repository/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                    </argLine>
+                    <argLine>
+                        -javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+                    </argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-instrument -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test &ndash;&gt;-->
+        <!--    <dependency>-->
+        <!--      <groupId>org.springframework.boot</groupId>-->
+        <!--      <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--      <version>${spring.boot.version}</version>-->
+        <!--      <scope>test</scope>-->
+        <!--    </dependency>-->
+
+
+    </dependencies>
+
+</project>
