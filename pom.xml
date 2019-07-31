@@ -12,6 +12,14 @@
 
     <url>https://github.com/poketilio/Spring-with-AspectJ.git</url>
 
+
+    <repositories>
+        <repository>
+            <id>maven-eclipse-repo</id>
+            <url>http://maven-eclipse.github.io/maven</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.surefire.version>3.0.0-M3</maven.surefire.version>
@@ -23,6 +31,7 @@
         <aspectj.maven.plugin.version>1.11</aspectj.maven.plugin.version>
         <junit.version>4.12</junit.version>
         <log4j2.version>2.12.0</log4j2.version>
+        <swt.version>4.12</swt.version>
     </properties>
 
     <build>
@@ -78,20 +87,42 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
             </plugin>
-            <!-- This plugin is for classes that aren't in src (For example AbstractDateTime)-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.version}</version>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
                 <configuration>
-                    <argLine>
-                        -javaagent:${user.home}/.m2/repository/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
-                    </argLine>
-                    <argLine>
-                        -javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                    </argLine>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>swt</artifactId>
+                    <version>4.12</version>
+                    <packaging>jar</packaging>
+                    <file>${basedir}/lib/swt-4.12.jar</file>
+                    <generatePom>true</generatePom>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>install-jar-lib</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
             </plugin>
+            <!-- This plugin is for classes that aren't in src (For example AbstractDateTime)-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>${maven.surefire.version}</version>-->
+<!--                <configuration>-->
+<!--                    <argLine>-->
+<!--                        -javaagent:${user.home}/.m2/repository/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar-->
+<!--                    </argLine>-->
+<!--                    <argLine>-->
+<!--                        -javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar-->
+<!--                    </argLine>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -110,11 +141,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-instrument -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-instrument</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework</groupId>-->
+<!--            <artifactId>spring-instrument</artifactId>-->
+<!--            <version>${spring.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -155,15 +186,11 @@
             <version>${log4j2.version}</version>
         </dependency>
 
-
-        <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test &ndash;&gt;-->
-        <!--    <dependency>-->
-        <!--      <groupId>org.springframework.boot</groupId>-->
-        <!--      <artifactId>spring-boot-starter-test</artifactId>-->
-        <!--      <version>${spring.boot.version}</version>-->
-        <!--      <scope>test</scope>-->
-        <!--    </dependency>-->
-
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>swt</artifactId>
+            <version>${swt.version}</version>
+        </dependency>
 
     </dependencies>
 

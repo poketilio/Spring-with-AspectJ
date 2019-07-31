@@ -19,7 +19,7 @@ public class UserAspect {
     @Around("userGetName()")
     public Object toLowerCase(ProceedingJoinPoint joinPoint) throws Throwable {
         Object ignoredToStringResult = joinPoint.proceed();
-        logger.trace("User#getName() has been invoked: " + ignoredToStringResult);
+        logger.debug("User#getName() has been invoked: " + ignoredToStringResult);
         return TO_STRING_RESULT;
     }
 }

@@ -19,4 +19,11 @@ public class AspectTests {
         user.setName("Name");
         assertThat(user.getName(), is(UserAspect.TO_STRING_RESULT));
     }
+
+//    @Test
+//    public void test2() {
+//        User user = new EventTableAspect();
+//        user.setName("Name");
+//        assertThat(user.getName(), is(UserAspect.TO_STRING_RESULT));
+//    }
 }
