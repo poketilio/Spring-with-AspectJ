@@ -1,15 +1,14 @@
 <aspectj>
 
     <aspects>
-        <!-- Aspects -->
         <aspect name="com.example.aspectj.DateTimeToStringAspect"/>
-        <aspect name="com.example.aspectj.EventTableAspect"/>
+        <aspect name="com.example.aspectj.MonitorWidgets"/>
     </aspects>
 
     <weaver options="-verbose -showWeaveInfo">
-<!--        <include within="org.joda.time.DateTime"/>-->
         <include within="org.joda.time.base.AbstractDateTime"/>
         <include within="org.eclipse.swt.widgets.EventTable"/>
+        <include within="org.eclipse.swt.widgets.Control"/>
     </weaver>
 
 </aspectj>

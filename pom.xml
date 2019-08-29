@@ -22,6 +22,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <maven.surefire.version>3.0.0-M3</maven.surefire.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <aspectj.version>1.9.4</aspectj.version>
@@ -31,10 +33,20 @@
         <aspectj.maven.plugin.version>1.11</aspectj.maven.plugin.version>
         <junit.version>4.12</junit.version>
         <log4j2.version>2.12.0</log4j2.version>
+        <maven.install.version>3.0.0-M1</maven.install.version>
         <swt.version>4.12</swt.version>
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/rebel.xml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <!-- This plugin is only necessary for aspects in src folder. (For example User)
@@ -44,13 +56,13 @@
                     <artifactId>aspectj-maven-plugin</artifactId>
                     <version>${aspectj.maven.plugin.version}</version>
                     <configuration>
-                        <showWeaveInfo>true</showWeaveInfo>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
                         <Xlint>ignore</Xlint>
-                        <complianceLevel>1.8</complianceLevel>
-                        <encoding>UTF-8</encoding>
-                        <verbose>true</verbose>
+                        <complianceLevel>${maven.compiler.source}</complianceLevel>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <verbose>false</verbose>
+                        <showWeaveInfo>false</showWeaveInfo>
                     </configuration>
                     <executions>
                         <execution>
@@ -77,38 +89,41 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <!-- IMPORTANT in maven compiler up 3.0 version. Probably is a bug-->
                     <useIncrementalCompilation>false</useIncrementalCompilation>
+                    <excludes>
+                        <exclude>rebel.xml</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.0.0-M1</version>
-                <configuration>
-                    <groupId>org.eclipse</groupId>
-                    <artifactId>swt</artifactId>
-                    <version>4.12</version>
-                    <packaging>jar</packaging>
-                    <file>${basedir}/lib/swt-4.12.jar</file>
-                    <generatePom>true</generatePom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install-jar-lib</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>validate</phase>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-install-plugin</artifactId>-->
+<!--                <version>${maven.install.version}</version>-->
+<!--                <configuration>-->
+<!--                    <groupId>org.eclipse</groupId>-->
+<!--                    <artifactId>swt</artifactId>-->
+<!--                    <version>4.12</version>-->
+<!--                    <packaging>jar</packaging>-->
+<!--                    <file>${basedir}/lib/swt-4.12.jar</file>-->
+<!--                    <generatePom>true</generatePom>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>install-jar-lib</id>-->
+<!--                        <goals>-->
+<!--                            <goal>install-file</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>validate</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <!-- This plugin is for classes that aren't in src (For example AbstractDateTime)-->
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
@@ -121,6 +136,25 @@
 <!--                    <argLine>-->
 <!--                        -javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar-->
 <!--                    </argLine>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>exec-maven-plugin</artifactId>-->
+<!--                <version>1.6.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <executable>maven</executable>-->
+<!--                    <mainClass>com.example.SWTWndowApplication</mainClass>-->
+<!--                    <arguments>-->
+<!--                        <argument>-javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</argument>-->
+<!--                    </arguments>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
         </plugins>
@@ -140,18 +174,10 @@
             </exclusions>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-instrument -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework</groupId>-->
-<!--            <artifactId>spring-instrument</artifactId>-->
-<!--            <version>${spring.version}</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>${aspectj.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -187,9 +213,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>swt</artifactId>
             <version>${swt.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

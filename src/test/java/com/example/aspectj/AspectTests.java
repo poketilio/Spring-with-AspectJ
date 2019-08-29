@@ -22,7 +22,7 @@ public class AspectTests {
 
 //    @Test
 //    public void test2() {
-//        User user = new EventTableAspect();
+//        User user = new MonitorWidgets();
 //        user.setName("Name");
 //        assertThat(user.getName(), is(UserAspect.TO_STRING_RESULT));
 //    }
